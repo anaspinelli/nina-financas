@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel Nina</title>
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{--bg:#FBF8FF;--card:#fff;--line:#E9E0F6;--lav:#EFE8FC;--lilac:#C3AEEB;--ac:#7457BD;--pink:#FADCE8;--ink:#1D1626;--mut:#6D6280;--ok:#2F8A63;--okb:#E2F3EA;--bad:#B83A62;--badb:#FBE2EA;--warn:#9A6414;--warnb:#FBEFD8}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:15px}
+button,input{font:inherit;color:inherit}
+.w{max-width:760px;margin:0 auto;padding:16px 16px 60px;display:flex;flex-direction:column;gap:14px}
+h1,h2{font-family:"Baloo 2",Nunito,sans-serif;margin:0;line-height:1.15}
+h1{font-size:26px;color:var(--ac)}h2{font-size:19px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 28px -20px rgba(116,87,189,.6)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}
+input{border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;font-size:16px;width:100%}
+label{font-size:13px;font-weight:800;color:var(--mut)}
+.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:800;background:var(--ac);color:#fff;cursor:pointer}
+.btn.g{background:var(--lav);color:var(--ac)}.btn.r{background:var(--badb);color:var(--bad)}.btn.sm{padding:6px 12px;font-size:13px}
+.btn:disabled{opacity:.6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-family:"Baloo 2";font-size:24px}.stat span{font-size:12px;color:var(--mut);font-weight:800}
+.pill{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.ok{background:var(--okb);color:var(--ok)}.bad{background:var(--badb);color:var(--bad)}.warn{background:var(--warnb);color:var(--warn)}.soft{background:var(--lav);color:var(--ac)}
+.cli{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.cli:first-child{border-top:0;padding-top:0}
+.cod{font-family:ui-monospace,Consolas,monospace;font-weight:800;letter-spacing:1px;background:var(--lav);padding:2px 8px;border-radius:8px}
+.mut{color:var(--mut);font-size:13px}
+.err{color:var(--bad);font-weight:700}
+.msg{white-space:pre-wrap;background:var(--pink);border-radius:12px;padding:10px;font-size:14px}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="row between"><h1>Painel da Nina</h1><button class="btn g sm" id="sair" hidden>Sair</button></div>
+
+  <form class="card" id="login">
+    <h2>Entrar no painel</h2>
+    <p class="mut" style="margin:0">Só você entra aqui. Use o e-mail e a senha que você criou no Supabase (Authentication).</p>
+    <div><label for="em">E-mail</label><input id="em" type="email" autocomplete="username" required></div>
+    <div><label for="pw">Senha</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <p class="err" id="lerr" hidden></p>
+    <button class="btn" type="submit">Entrar</button>
+  </form>
+
+  <div id="app" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="card" style="margin-top:14px">
+      <h2>Vendi por fora (Pix, WhatsApp)</h2>
+      <p class="mut" style="margin:0">Cadastre a compradora e mande a mensagem com o código para ela.</p>
+      <div class="row"><input id="nEmail" type="email" placeholder="E-mail da compradora" style="flex:2;min-width:200px"><input id="nNome" placeholder="Nome" style="flex:1;min-width:120px"><button class="btn" id="nAdd">Cadastrar</button></div>
+      <div id="nRes"></div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="row between"><h2>Compradoras</h2><input id="busca" placeholder="Buscar por e-mail ou nome" style="max-width:260px"></div>
+      <div id="lista"></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+const URL_='https://grspbnpazsrsqeiderls.supabase.co',KEY='sb_publishable_vbFU7vZsG1_YYv7aaiA4Kw_DUNVRYyb';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dt=s=>s?new Date(s).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+if(!/^https:/.test(URL_)){document.body.insertAdjacentHTML('afterbegin','<p style="padding:16px;color:#B83A62;font-weight:800">O painel ainda não foi configurado.</p>');return}
+const sb=supabase.createClient(URL_,KEY);
+const linkApp=location.origin+location.pathname.replace(/painel\.html$/,'');
+let dados=[];
+function msgCliente(c){return 'Oi'+(c.nome?', '+c.nome.split(' ')[0]:'')+'! Seu acesso à Nina Finanças 💜\n\n1. Abra: '+linkApp+'\n2. Digite seu e-mail: '+c.email+'\n3. Digite o código: '+c.codigo+'\n\nGuarde este código. Ele funciona em um celular por vez.'}
+async function copiar(t){try{await navigator.clipboard.writeText(t);alert('Copiado! Agora é só colar no WhatsApp.')}catch(e){prompt('Copie a mensagem:',t)}}
+async function carregar(){const {data,error}=await sb.rpc('admin_listar');if(error){$('#lista').innerHTML='<p class="err">'+(String(error.message).includes('permissao')?'Seu e-mail não está na lista de administradoras (tabela admins).':'Não consegui carregar: '+esc(error.message))+'</p>';return}dados=data||[];render()}
+function render(){
+  const q=$('#busca').value.trim().toLowerCase();
+  const ativ=dados.filter(d=>d.status==='ativa'),bloq=dados.filter(d=>d.status!=='ativa'),usando=dados.filter(d=>d.aparelho);
+  $('#stats').innerHTML=[['Compradoras',dados.length],['Ativas',ativ.length],['Usando o app',usando.length],['Bloqueadas',bloq.length]].map(([l,v])=>'<div class="stat"><b>'+v+'</b><span>'+l+'</span></div>').join('');
+  const fl=dados.filter(d=>!q||(d.email+' '+(d.nome||'')).toLowerCase().includes(q));
+  $('#lista').innerHTML=fl.length?fl.map(d=>'<div class="cli"><div class="row between"><b>'+esc(d.nome||'(sem nome)')+'</b><span class="pill '+(d.status==='ativa'?'ok':'bad')+'">'+(d.status==='ativa'?'Ativa':'Bloqueada')+'</span></div>'+
+    '<div class="mut">'+esc(d.email)+' · '+(d.origem==='manual'?'venda por fora':'Kiwify')+(d.pedido?' · pedido '+esc(d.pedido):'')+'</div>'+
+    '<div class="row">'+(d.codigo?'<span class="cod">'+esc(d.codigo)+'</span>':'<span class="pill warn">Ainda não entrou no app</span>')+(d.aparelho?'<span class="pill soft">Celular ativo</span>':'')+(d.trocas?'<span class="pill warn">'+d.trocas+' troca(s) em '+esc(d.trocas_mes||'')+'</span>':'')+'</div>'+
+    '<div class="mut">Entrou: '+dt(d.ativado_em)+' · Último uso: '+dt(d.ultimo_acesso)+'</div>'+
+    '<div class="row">'+(d.codigo?'<button class="btn sm" data-a="msg" data-e="'+esc(d.email)+'">Copiar mensagem</button>':'')+'<button class="btn g sm" data-a="liberar" data-e="'+esc(d.email)+'">Liberar celular novo</button><button class="btn g sm" data-a="novo" data-e="'+esc(d.email)+'">Gerar código novo</button>'+
+    (d.status==='ativa'?'<button class="btn r sm" data-a="bloq" data-e="'+esc(d.email)+'">Bloquear</button>':'<button class="btn g sm" data-a="desbloq" data-e="'+esc(d.email)+'">Desbloquear</button>')+'<button class="btn r sm" data-a="apagar" data-e="'+esc(d.email)+'">Apagar</button></div></div>').join(''):'<p class="mut">Ninguém por aqui ainda. Quando alguém comprar na Kiwify, aparece aqui sozinho.</p>';
+}
+$('#lista').addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const em=b.dataset.e,a=b.dataset.a,c=dados.find(x=>x.email===em);
+  if(a==='msg'){copiar(msgCliente(c));return}
+  if(a==='liberar'){if(!confirm('Liberar '+em+' para entrar num celular novo? O celular atual dela será desconectado.'))return;await sb.rpc('admin_liberar',{p_email:em})}
+  if(a==='novo'){if(!confirm('Gerar um código novo para '+em+'? O código antigo deixa de funcionar.'))return;const {data}=await sb.rpc('admin_novo_codigo',{p_email:em});if(data)copiar(msgCliente({...c,codigo:data}))}
+  if(a==='bloq'){if(!confirm('Bloquear o acesso de '+em+'?'))return;await sb.rpc('admin_status',{p_email:em,p_status:'bloqueada'})}
+  if(a==='desbloq')await sb.rpc('admin_status',{p_email:em,p_status:'ativa'});
+  if(a==='apagar'){if(!confirm('Apagar '+em+' de vez? Ela perde o acesso e isso não tem volta.'))return;await sb.rpc('admin_apagar',{p_email:em})}
+  carregar()});
+$('#busca').addEventListener('input',render);
+$('#nAdd').addEventListener('click',async()=>{const em=$('#nEmail').value.trim().toLowerCase(),nm=$('#nNome').value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){alert('Digite um e-mail válido');return}
+  const {data,error}=await sb.rpc('admin_adicionar',{p_email:em,p_nome:nm});if(error){alert('Erro: '+error.message);return}
+  const m=msgCliente({email:em,nome:nm,codigo:data});$('#nRes').innerHTML='<div class="msg">'+esc(m)+'</div><button class="btn sm" id="nCop" style="margin-top:8px">Copiar mensagem</button>';$('#nCop').onclick=()=>copiar(m);
+  $('#nEmail').value='';$('#nNome').value='';carregar()});
+async function entrou(){$('#login').hidden=true;$('#app').hidden=false;$('#sair').hidden=false;carregar()}
+$('#login').addEventListener('submit',async e=>{e.preventDefault();$('#lerr').hidden=true;const {error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
+  if(error){$('#lerr').textContent='E-mail ou senha não conferem.';$('#lerr').hidden=false;return}entrou()});
+$('#sair').addEventListener('click',async()=>{await sb.auth.signOut();location.reload()});
+sb.auth.getSession().then(({data})=>{if(data&&data.session)entrou()});
+})();
+</script>
+</body>
+</html>
