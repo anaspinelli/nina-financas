@@ -1,5 +1,5 @@
 // Nina Finanças: guarda o app no celular para abrir mesmo sem internet.
-const CACHE = 'nina-v4.3';
+const CACHE = 'nina-v4.4';
 const ARQUIVOS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -15,7 +15,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   // Página: tenta a internet primeiro (para pegar atualizações) e usa a cópia se estiver offline.
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(CACHE).then(k => k.put('index.html', c)); return r; })
+    e.respondWith(fetch(req, { cache: 'no-store' }).then(r => { const c = r.clone(); caches.open(CACHE).then(k => k.put('index.html', c)); return r; })
       .catch(() => caches.match('index.html')));
     return;
   }
