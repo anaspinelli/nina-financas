@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nina Finanças — organize seu dinheiro só falando</title>
+<meta name="description" content="A Nina é sua assistente financeira por voz. Você fala 'gastei 20 no lanche' e ela anota. Contas, dívidas, metas, lista de compras e planilha. Pagamento único de R$ 19,90.">
+<meta property="og:title" content="Nina Finanças — organize seu dinheiro só falando">
+<meta property="og:description" content="Você fala, a Nina anota. Contas, dívidas, metas e planilha sem esforço. R$ 19,90, pagamento único.">
+<meta property="og:image" content="https://anaspinelli.github.io/nina-financas/nina-relatorio.jpg">
+<meta name="theme-color" content="#C3AEEB">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{--bg:#FBF8FF;--lav:#EFE8FC;--lilac:#C3AEEB;--ac:#7457BD;--pink:#FADCE8;--pinkd:#DE7FA6;--ink:#1D1626;--mut:#6D6280;--line:#E9E0F6;--ok:#2F8A63}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23C3AEEB' fill-opacity='.28'%3E%3Cpath d='M20 26c-3-4-9-2-9 3 0 4 9 9 9 9s9-5 9-9c0-5-6-7-9-3z'/%3E%3Cpath d='M86 70l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z'/%3E%3Ccircle cx='60' cy='18' r='2'/%3E%3C/g%3E%3C/svg%3E");background-size:120px 120px}
+h1,h2,h3{font-family:"Baloo 2",Nunito,sans-serif;line-height:1.1;margin:0}
+.w{max-width:1040px;margin:0 auto;padding:0 18px}
+section{padding:56px 0}
+.btn{display:inline-block;text-align:center;text-decoration:none;border-radius:999px;padding:17px 30px;font-weight:800;font-size:19px;background:linear-gradient(135deg,#7457BD,#A688E0 60%,#DE7FA6);color:#fff;box-shadow:0 14px 28px -14px #7457BD;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.mut{color:var(--mut)}
+.tag{display:inline-block;background:var(--pink);color:#B5506F;font-weight:800;border-radius:999px;padding:6px 14px;font-size:14px}
+/* HERO */
+.hero{padding-top:34px;background:radial-gradient(60% 50% at 100% 0%,#FCDDEA,transparent 70%),radial-gradient(60% 60% at 0% 40%,#EFE6FD,transparent 70%)}
+.hero .w{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(38px,6vw,62px);color:var(--ac)}
+.hero h1 span{color:var(--pinkd)}
+.hero p.sub{font-size:20px;margin:16px 0 22px}
+.preco{display:flex;align-items:baseline;gap:10px;margin:14px 0 6px;flex-wrap:wrap}
+.preco b{font-family:"Baloo 2";font-size:46px;color:var(--ink)}
+.preco small{font-weight:800;color:var(--mut)}
+.selo{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:15px;font-weight:700;color:var(--mut)}
+/* DEMO */
+.demo{background:#fff;border-radius:34px;padding:20px;box-shadow:0 30px 60px -30px rgba(116,87,189,.6);border:1px solid var(--line);max-width:360px;justify-self:center;width:100%}
+.demo .topo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.demo .topo img{width:46px;height:46px;border-radius:50%}
+.demo .topo b{font-family:"Baloo 2";font-size:20px;color:var(--ac)}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:300px}
+.m{max-width:85%;padding:10px 14px;border-radius:18px;font-size:15px;opacity:0;transform:translateY(8px);animation:aparece 12s infinite}
+.m.eu{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:6px}
+.m.ni{align-self:flex-start;background:var(--lav);border-bottom-left-radius:6px}
+.m:nth-child(1){animation-delay:0s}.m:nth-child(2){animation-delay:1.2s}.m:nth-child(3){animation-delay:3s}.m:nth-child(4){animation-delay:4.2s}.m:nth-child(5){animation-delay:6s}.m:nth-child(6){animation-delay:7.2s}
+@keyframes aparece{0%{opacity:0;transform:translateY(8px)}4%,85%{opacity:1;transform:none}92%,100%{opacity:0}}
+.mic{display:flex;align-items:center;gap:10px;margin-top:14px;background:var(--lav);border-radius:999px;padding:8px 8px 8px 16px;color:var(--mut);font-size:14px;font-weight:700}
+.mic span{margin-left:auto;width:42px;height:42px;border-radius:50%;background:linear-gradient(150deg,#DE7FA6,#7457BD);display:grid;place-items:center;color:#fff;font-size:20px;animation:pulsa 1.4s infinite}
+@keyframes pulsa{0%{box-shadow:0 0 0 0 rgba(222,127,166,.6)}100%{box-shadow:0 0 0 14px rgba(222,127,166,0)}}
+/* CARDS */
+.titulo{text-align:center;max-width:720px;margin:0 auto 32px}
+.titulo h2{font-size:clamp(30px,4.5vw,44px);color:var(--ac)}
+.titulo p{margin:10px 0 0}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 14px 30px -24px rgba(116,87,189,.7)}
+.card .e{font-size:34px}
+.card h3{font-size:21px;margin:8px 0 6px}
+.card p{margin:0;font-size:15.5px;color:var(--mut)}
+/* TELAS */
+.telas{display:flex;gap:18px;overflow-x:auto;padding:10px 4px 24px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.tela{flex:none;width:240px;scroll-snap-align:center;text-align:center}
+.tela .fone{border-radius:30px;border:8px solid #1D1626;overflow:hidden;aspect-ratio:9/17;background:#fff;box-shadow:0 20px 40px -24px rgba(29,22,38,.7)}
+.tela .fone img{width:100%;height:100%;object-fit:cover;object-position:top}
+.tela b{display:block;margin-top:10px;font-size:15px}
+/* PASSOS */
+.passos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:p}
+.passos .card{counter-increment:p;position:relative;padding-top:34px}
+.passos .card::before{content:counter(p);position:absolute;top:-18px;left:22px;width:40px;height:40px;border-radius:50%;background:linear-gradient(140deg,var(--ac),var(--pinkd));color:#fff;font-family:"Baloo 2";font-weight:800;font-size:22px;display:grid;place-items:center}
+/* OFERTA */
+.oferta{background:linear-gradient(140deg,#7457BD,#A688E0 55%,#DE7FA6);color:#fff;border-radius:34px;padding:38px 26px;text-align:center;box-shadow:0 30px 60px -30px #7457BD}
+.oferta h2{font-size:clamp(30px,4.5vw,44px)}
+.oferta ul{list-style:none;padding:0;margin:20px auto;max-width:520px;text-align:left;display:flex;flex-direction:column;gap:8px;font-weight:700}
+.oferta .de{opacity:.85;font-weight:700}
+.oferta .por{font-family:"Baloo 2";font-size:64px;line-height:1}
+.oferta .btn{background:#fff;color:var(--ac);box-shadow:0 14px 28px -14px rgba(0,0,0,.4);margin-top:14px}
+/* FAQ */
+details{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:800;font-size:17px}
+details p{margin:10px 0 0;color:var(--mut)}
+footer{text-align:center;padding:30px 18px 110px;color:var(--mut);font-size:14px}
+.flutua{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:20;width:calc(100% - 28px);max-width:420px}
+.flutua .btn{width:100%;font-size:18px;padding:15px}
+@media(max-width:820px){.hero .w{grid-template-columns:1fr}.grade,.passos{grid-template-columns:1fr}section{padding:42px 0}.passos{gap:30px}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="w">
+    <div>
+      <span class="tag">🎤 Assistente financeira por voz</span>
+      <h1 style="margin-top:14px">Organize seu dinheiro <span>só falando.</span></h1>
+      <p class="sub">Conheça a <b>Nina</b>: você fala <i>"gastei 20 no lanche"</i> e ela anota. Contas do mês, dívidas, metas e lista de compras, tudo organizado sem planilha chata.</p>
+      <div class="preco"><b>R$ 19,90</b><small>pagamento único · sem mensalidade</small></div>
+      <a class="btn" href="https://pay.kiwify.com.br/hBofSMb">Quero a minha Nina 💜</a>
+      <div class="selo"><span>✅ Acesso na hora</span><span>📱 iPhone, Android e PC</span><span>🔒 7 dias de garantia</span></div>
+    </div>
+    <div class="demo" aria-label="Exemplo de conversa com a Nina">
+      <div class="topo"><img src="icon-192.png" alt=""><div><b>Nina</b><br><span class="mut" style="font-size:13px">sua amiga das finanças</span></div></div>
+      <div class="chat">
+        <div class="m eu">Gastei 20 no lanche 🍔</div>
+        <div class="m ni">Anotei: Lanche, R$ 20,00 ✅</div>
+        <div class="m eu">Tô precisando de uma sandália</div>
+        <div class="m ni">Coloquei na sua lista de compras 👡</div>
+        <div class="m eu">Quanto eu gastei esse mês?</div>
+        <div class="m ni">Você gastou R$ 458 em extras. A maior parte em Mercado 🛒</div>
+      </div>
+      <div class="mic">Toque e fale com a Nina <span>🎤</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="w">
+    <div class="titulo"><h2>Escrever cansa. Falar é fácil.</h2><p class="mut">A Nina entende o jeito que você fala e coloca cada coisa no lugar certo.</p></div>
+    <div class="grade">
+      <div class="card"><div class="e">🗓️</div><h3>Contas do mês</h3><p>"Aluguel de 900 todo dia 5". Ela lembra, mostra o que falta pagar e quanto você precisa ter.</p></div>
+      <div class="card"><div class="e">🔔</div><h3>Avisos no celular</h3><p>Um lembrete 3 dias antes de cada conta vencer. Nada de esquecer boleto.</p></div>
+      <div class="card"><div class="e">💳</div><h3>Dívidas e cartão</h3><p>"Devo 300 pra Carla", "comprei uma TV em 10x". Ela controla as parcelas e as dívidas.</p></div>
+      <div class="card"><div class="e">🤝</div><h3>Quem te deve</h3><p>"A Joana me deve 50". Quando ela pagar, é só falar que a Nina risca.</p></div>
+      <div class="card"><div class="e">🛍️</div><h3>Lista de compras</h3><p>"Acabou minha base". Quando comprar, ela tira da lista e já anota o gasto.</p></div>
+      <div class="card"><div class="e">🎯</div><h3>Metas e cofrinho</h3><p>Casa, carro, viagem... A Nina calcula quanto do salário guardar para cada sonho.</p></div>
+      <div class="card"><div class="e">📊</div><h3>Planilha automática</h3><p>Gráficos e tabela prontos, sem você digitar nada. Dá até para baixar no Excel.</p></div>
+      <div class="card"><div class="e">📸</div><h3>Relatório do mês</h3><p>Uma imagem linda do seu mês para guardar ou compartilhar no WhatsApp.</p></div>
+      <div class="card"><div class="e">☁️</div><h3>Salvo na nuvem</h3><p>Trocou de celular? Entre com seu código e tudo volta. Seus dados são só seus.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w">
+    <div class="titulo"><h2>Uma amiga que tem humor 💜</h2><p class="mut">A Nina fica feliz quando as contas estão em dia, triste quando tem conta atrasada e brava quando você gasta demais. No modo noite ela dorme abraçada no travesseiro, e nas datas especiais ela se arruma: São João, Natal, Carnaval, Dia das Mães...</p></div>
+    <div class="telas">
+      <div class="tela"><div class="fone"><img src="nina-tela-inicio.jpg" alt="Tela inicial da Nina" loading="lazy"></div><b>Fale e ela anota</b></div>
+      <div class="tela"><div class="fone"><img src="nina-tela-festa-saojoao.jpg" alt="Nina vestida para o São João" loading="lazy"></div><b>Roupinha de São João</b></div>
+      <div class="tela"><div class="fone"><img src="nina-tela-lista.jpg" alt="Lista de compras" loading="lazy"></div><b>Lista de compras</b></div>
+      <div class="tela"><div class="fone"><img src="nina-tela-planilha.jpg" alt="Planilha com gráficos" loading="lazy"></div><b>Planilha automática</b></div>
+      <div class="tela"><div class="fone"><img src="nina-tela-metas.jpg" alt="Metas e cofrinho" loading="lazy"></div><b>Metas e cofrinho</b></div>
+      <div class="tela"><div class="fone"><img src="nina-tela-inicio-noite.jpg" alt="Modo noite" loading="lazy"></div><b>Modo noite</b></div>
+      <div class="tela"><div class="fone" style="aspect-ratio:4/5;border-radius:22px"><img src="nina-relatorio.jpg" alt="Relatório do mês para compartilhar" loading="lazy"></div><b>Relatório para compartilhar</b></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w">
+    <div class="titulo"><h2>Como funciona</h2></div>
+    <div class="passos">
+      <div class="card"><h3>Compre aqui</h3><p>Pagamento único de R$ 19,90, no Pix ou no cartão. Sem mensalidade.</p></div>
+      <div class="card"><h3>Entre com seu e-mail</h3><p>Use o e-mail da compra. A Nina cria o seu código de acesso na hora.</p></div>
+      <div class="card"><h3>Comece a falar</h3><p>Coloque a Nina na tela do celular como um app e conte seus gastos. Pronto!</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w">
+    <div class="oferta">
+      <h2>Leve a Nina hoje</h2>
+      <ul>
+        <li>🎤 Assistente que entende o que você fala</li>
+        <li>🗓️ Contas, dívidas, parcelas e quem te deve</li>
+        <li>🔔 Avisos 3 dias antes das contas vencerem</li>
+        <li>🎯 Metas, cofrinho, planilha e relatório do mês</li>
+        <li>☁️ Seus dados salvos na nuvem</li>
+        <li>💜 A Nina com humor e roupinhas das datas especiais</li>
+      </ul>
+      <div class="por">R$ 19,90</div>
+      <div class="de">pagamento único, para sempre</div>
+      <a class="btn" href="https://pay.kiwify.com.br/hBofSMb">Quero a minha Nina 💜</a>
+      <p style="margin:16px 0 0;font-weight:700">🔒 7 dias de garantia: se não gostar, você pede o seu dinheiro de volta.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w" style="max-width:760px">
+    <div class="titulo"><h2>Dúvidas</h2></div>
+    <details><summary>Funciona no iPhone?</summary><p>Sim! No iPhone você coloca a Nina na tela de início pelo Safari (a própria Nina te ensina) e fala usando o microfone do teclado. No Android e no computador é só tocar no microfone da Nina.</p></details>
+    <details><summary>Tem mensalidade?</summary><p>Não. Você paga R$ 19,90 uma vez só e usa para sempre, com todas as atualizações.</p></details>
+    <details><summary>Preciso baixar na loja de aplicativos?</summary><p>Não. A Nina é um app que abre pelo navegador e você coloca na tela do celular com o ícone dela, como qualquer aplicativo.</p></details>
+    <details><summary>E se eu trocar de celular?</summary><p>Seus dados ficam salvos na nuvem, ligados ao seu código. No celular novo, entre com seu e-mail e o código, e tudo volta.</p></details>
+    <details><summary>Posso usar em mais de um celular?</summary><p>O acesso funciona em um celular por vez. Se trocar de aparelho, é só entrar com seu código no novo.</p></details>
+    <details><summary>Meus dados ficam seguros?</summary><p>Sim. Seus dados financeiros são só seus. Eles não são vendidos nem compartilhados com ninguém.</p></details>
+    <details><summary>Precisa de internet?</summary><p>Para anotar por escrito, não. Para falar por voz e salvar na nuvem, sim.</p></details>
+  </div>
+</section>
+
+<footer>
+  <img src="icon-192.png" alt="" width="64" height="64" style="border-radius:50%"><br>
+  <b>Nina Finanças</b> · organize seu dinheiro falando 🎤<br>
+  Dúvidas? <a href="https://wa.me/5581994832686?text=Oi!%20Quero%20saber%20mais%20sobre%20a%20Nina%20Finan%C3%A7as." target="_blank" rel="noopener" style="color:var(--ac);font-weight:800">Fale comigo no WhatsApp</a>
+</footer>
+
+<div class="flutua"><a class="btn" href="https://pay.kiwify.com.br/hBofSMb">Quero a minha Nina · R$ 19,90</a></div>
+</body>
+</html>

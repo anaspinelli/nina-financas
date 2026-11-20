@@ -1,5 +1,5 @@
 // Nina Finanças: guarda o app no celular para abrir mesmo sem internet.
-const CACHE = 'nina-v4.4';
+const CACHE = 'nina-v5.0';
 const ARQUIVOS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -23,5 +23,22 @@ self.addEventListener('fetch', e => {
   e.respondWith(caches.match(req).then(hit => {
     const rede = fetch(req).then(r => { if (r && (r.ok || r.type === 'opaque')) { const c = r.clone(); caches.open(CACHE).then(k => k.put(req, c)); } return r; }).catch(() => hit);
     return hit || rede;
+  }));
+});
+
+// Avisos no celular (lembretes de contas e relatório do mês)
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'Nina Finanças 💜', {
+    body: d.body || '', icon: 'icon-192.png', badge: 'icon-192.png', data: { url: d.url || './' }, tag: d.tag || undefined
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
+  e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
+    for (const c of cs) { if ('focus' in c) { if ('navigate' in c) c.navigate(url); return c.focus(); } }
+    return clients.openWindow(url);
   }));
 });
