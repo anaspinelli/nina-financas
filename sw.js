@@ -1,5 +1,5 @@
 // Nina Finanças: guarda o app no celular para abrir mesmo sem internet.
-const CACHE = 'nina-v6.0';
+const CACHE = 'nina-v6.1';
 const ARQUIVOS = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
