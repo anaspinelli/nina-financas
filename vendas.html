@@ -196,5 +196,16 @@ footer{text-align:center;padding:30px 18px 110px;color:var(--mut);font-size:14px
 </footer>
 
 <div class="flutua"><a class="btn" href="https://pay.kiwify.com.br/hBofSMb">Quero a minha Nina · R$ 19,90</a></div>
+<script>
+/* Rastreio: repassa a origem (utm_*, src, fbclid) para o checkout da Kiwify */
+(function(){
+  var q=new URLSearchParams(location.search),keep=new URLSearchParams();
+  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid'].forEach(function(k){var v=q.get(k);if(v)keep.set(k,v)});
+  if(!keep.get('utm_source')&&document.referrer){try{var h=new URL(document.referrer).hostname;if(/instagram/.test(h))keep.set('utm_source','instagram');else if(/facebook|fb\./.test(h))keep.set('utm_source','facebook');else if(/whatsapp|wa\.me/.test(h))keep.set('utm_source','whatsapp')}catch(e){}}
+  if(!keep.get('utm_source'))keep.set('utm_source','direto');
+  var s=keep.toString();
+  document.querySelectorAll('a[href*="pay.kiwify.com.br"]').forEach(function(a){a.href=a.href.split('?')[0]+'?'+s;a.addEventListener('click',function(){if(window.fbq)fbq('track','InitiateCheckout',{value:19.9,currency:'BRL'})})});
+})();
+</script>
 </body>
 </html>
